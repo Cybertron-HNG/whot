@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Whot · start.ng</title>
+  <meta name="description" content="Play Whot, the Nigerian card game, with friends or bots. Free in your browser on start.ng.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://start.ng/kit.js" defer></script>
+</head>
+<body>
+  <main id="app">
+    <h1>Whot</h1>
+
+    <!-- the lobby -->
+    <section id="lobby">
+      <p class="lead">The Nigerian card game for 2 to 4. Be the first to play your last card.</p>
+      <p class="invite" id="invite" hidden></p>
+      <div class="buttons">
+        <button type="button" id="friend" class="primary">Make a room</button>
+        <button type="button" id="bot">Play the bots</button>
+      </div>
+      <form id="join" class="join" autocomplete="off">
+        <label for="code">Have a code?</label>
+        <input id="code" name="code" maxlength="6" autocapitalize="characters" spellcheck="false" placeholder="K7M2QX">
+        <button type="submit">Join</button>
+      </form>
+      <p class="note">You need to be signed in with start.ng. Make a room, send the code to up to 3 friends, add bots to fill empty seats, and start. The server deals and checks every card.</p>
+      <p class="problem" id="lobby-problem" role="status" hidden></p>
+      <button type="button" id="signin" hidden>Sign in with start.ng</button>
+    </section>
+
+    <!-- waiting for people -->
+    <section id="waiting" hidden>
+      <p class="lead" id="waiting-title">Share this code</p>
+      <div class="code-box">
+        <span class="code" id="room-code" aria-label="Room code"></span>
+        <button type="button" id="copy">Copy invite link</button>
+      </div>
+      <ul class="names" id="names"></ul>
+      <div class="buttons">
+        <button type="button" id="add-bot" hidden>Add a bot</button>
+        <button type="button" id="start" class="primary" hidden>Start the game</button>
+        <button type="button" id="wait-cancel" class="link">Leave</button>
+      </div>
+      <p class="note" id="waiting-note"></p>
+    </section>
+
+    <!-- the game -->
+    <section id="game" hidden aria-label="The game">
+      <div class="players" id="players"></div>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+      <div class="table">
+        <div class="pile">
+          <span class="label">On the table</span>
+          <div id="top"></div>
+          <span class="shape-now" id="shape-now"></span>
+        </div>
+        <button type="button" id="market" class="market"></button>
+      </div>
+      <p class="pending" id="pending" hidden></p>
+      <div class="picker" id="picker" hidden>
+        <span>Pick the shape you want</span>
+        <div class="shapes" id="shapes"></div>
+        <button type="button" id="picker-cancel" class="link">Cancel</button>
+      </div>
+      <div class="hand" id="hand" aria-label="Your cards"></div>
+      <p class="note" id="game-note" role="status" aria-live="polite"></p>
+      <div class="buttons" id="after" hidden>
+        <button type="button" id="share">Share on X</button>
+        <button type="button" id="back" class="primary">Back to the lobby</button>
+      </div>
+      <details class="rules"><summary>How to play</summary>
+        <p>Play a card that matches the top card in shape or number, or pick one from the market. A <b>Whot</b> card goes on anything and names the shape. <b>1</b> hold on: play again. <b>14</b> general market: everyone else picks one, you play again. <b>8</b> suspension: the next player misses a turn. <b>2</b> pick two and <b>5</b> pick three: the next player picks up unless they play another 2 (or 5), which adds on.</p>
+      </details>
+    </section>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>

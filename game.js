@@ -67,6 +67,7 @@
     r.on('open', () => note(''));
     r.on('error', (m) => note(m.message));
     r.on('closed', (m) => leaveRoom(reasonText(m.reason)));
+    StartngExtras.watch(r); // sounds, the "play again?" popup, and the waiting spinner (extras.js)
     render();
   }
 
@@ -83,6 +84,7 @@
 
   function leaveRoom(message) {
     room?.leave();
+    StartngExtras.reset();
     room = null;
     botsNext = 0;
     history.replaceState(null, '', location.pathname);
@@ -91,6 +93,14 @@
   }
 
   // ---------- drawing the room ----------
+
+  // How the game ended, for the status line (and the "play again?" popup, which shows it)
+  function ended(result, wonByPlaying) {
+    const won = result.winner === room.you;
+    if (result.reason === 'resigned') return won ? 'They resigned. You win!' : 'You resigned';
+    if (result.reason === 'left') return won ? 'They left. You win!' : `${nameOf(result.winner)} won`;
+    return won ? wonByPlaying : `${nameOf(result.winner)} won`;
+  }
 
   function render() {
     if (!room) return;
@@ -166,7 +176,7 @@
     drawPicker();
 
     if (result) {
-      $('status').textContent = result.winner === room.you ? 'You played your last card. You win! 🎉' : `${nameOf(result.winner)} won`;
+      $('status').textContent = ended(result, 'You played your last card. You win! 🎉');
     } else if (mine) {
       $('status').textContent = s.pending ? 'Your turn: defend or pick up' : s.playable.length ? 'Your turn' : 'Your turn: nothing fits, pick from the market';
     } else {
